@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Personal AI Operating System — 你的 AI 助理管理系統</title>
-<meta name="description" content="把 Telegram 變成你的 AI 助理 — 文書作業、出勤統計、郵件管理、投資監控，一次搞定。">
+<meta name="description" content="把 Telegram 變成你的 AI 助理 — 文書作業、出勤統計、郵件管理、投資監控、地端部署、網站建置，一次搞定。">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -19,6 +19,7 @@
     --accent2: #a29bfe;
     --green: #00b894;
     --orange: #fdcb6e;
+    --red: #e17055;
     --radius: 12px;
   }
 
@@ -77,23 +78,41 @@
 
   .highlight-box { background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(162,155,254,0.05)); border: 1px solid rgba(108,92,231,0.2); border-radius: var(--radius); padding: 36px 40px; font-size: 18px; line-height: 1.8; text-align: center; font-weight: 500; }
 
-  #deliverables .grid3, #business .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px; }
+  #deliverables .grid3,
+  #business .grid3,
+  #hardware .grid3,
+  #website .grid3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
   .phase-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; position: relative; overflow: hidden; }
   .phase-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
   .phase-card:nth-child(1)::before { background: var(--accent); }
   .phase-card:nth-child(2)::before { background: var(--green); }
   .phase-card:nth-child(3)::before { background: var(--orange); }
   .phase-number { font-size: 12px; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-  #deliverables .phase-card:nth-child(1) .phase-number, #business .phase-card:nth-child(1) .phase-number { color: var(--accent); }
-  #deliverables .phase-card:nth-child(2) .phase-number { color: var(--green); }
-  #deliverables .phase-card:nth-child(3) .phase-number { color: var(--orange); }
-  #business .phase-card:nth-child(2) .phase-number { color: var(--green); }
-  #business .phase-card:nth-child(3) .phase-number { color: var(--orange); }
+  #deliverables .phase-card:nth-child(1) .phase-number,
+  #business .phase-card:nth-child(1) .phase-number,
+  #hardware .phase-card:nth-child(1) .phase-number,
+  #website .phase-card:nth-child(1) .phase-number { color: var(--accent); }
+  #deliverables .phase-card:nth-child(2) .phase-number,
+  #business .phase-card:nth-child(2) .phase-number,
+  #hardware .phase-card:nth-child(2) .phase-number,
+  #website .phase-card:nth-child(2) .phase-number { color: var(--green); }
+  #deliverables .phase-card:nth-child(3) .phase-number,
+  #business .phase-card:nth-child(3) .phase-number,
+  #hardware .phase-card:nth-child(3) .phase-number,
+  #website .phase-card:nth-child(3) .phase-number { color: var(--orange); }
   .phase-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
   .phase-card p { color: var(--text2); font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
   .phase-card ul { list-style: none; padding: 0; }
   .phase-card ul li { padding: 6px 0; font-size: 14px; color: var(--text); padding-left: 20px; position: relative; }
   .phase-card ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent2); }
+
+  .hw-spec { display: inline-block; background: rgba(108,92,231,0.12); color: var(--accent2); padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; margin: 2px; }
+  .hw-price { font-size: 20px; font-weight: 700; color: var(--green); }
 
   .flow-diagram { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
   .flow-step { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 24px; font-size: 14px; font-weight: 500; text-align: center; }
@@ -142,6 +161,8 @@
     <a href="#problem">這是什麼</a>
     <a href="#deliverables">服務內容</a>
     <a href="#business">商業應用</a>
+    <a href="#hardware">硬體設備</a>
+    <a href="#website">網站建置</a>
     <a href="#pricing">方案與價格</a>
     <a href="#contact" class="nav-cta">聯絡我</a>
   </div>
@@ -313,6 +334,199 @@
   </div>
 </section>
 
+<!-- Hardware / On-Premise -->
+<section id="hardware">
+  <div class="container">
+    <div class="section-label">地端部署</div>
+    <h2 class="section-title">不想把資料送上雲端？那就把 AI 搬進你家</h2>
+    <p class="section-desc">
+      有些公司不能把資料送上雲端——病歷、合約、客戶個資、內部報表。
+      沒問題，我可以幫你在自己的電腦或公司主機上，建立完全離線的 AI 模型。
+    </p>
+
+    <div class="grid3">
+      <div class="phase-card">
+        <div class="phase-number">入門方案</div>
+        <h3>🖥️ 個人／小店<br><span style="font-size:14px;color:var(--text2);font-weight:400;">文書、摘要、翻譯</span></h3>
+        <p>
+          適合每天處理文書、需要 AI 協助但不追求最快速度的個人工作者。
+        </p>
+        <div style="margin-bottom: 16px;">
+          <span class="hw-spec">RTX 3060 12GB</span>
+          <span class="hw-spec">RTX 4060 Ti 16GB</span>
+          <span class="hw-spec">7B~13B 模型</span>
+        </div>
+        <ul>
+          <li>可流暢跑 Qwen2.5-7B / Llama-3-8B</li>
+          <li>文書摘要、翻譯、會議記錄</li>
+          <li>全離線運作，資料不外洩</li>
+        </ul>
+        <div style="margin-top: 16px;">
+          <span class="hw-price">≈ NT$ 15,000~25,000</span>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">進階方案</div>
+        <h3>🚀 中小企業<br><span style="font-size:14px;color:var(--text2);font-weight:400;">出勤分析、客戶對話、報表</span></h3>
+        <p>
+          適合需要同時處理多項任務、對回覆品質有更高要求的中小企業。
+        </p>
+        <div style="margin-bottom: 16px;">
+          <span class="hw-spec">RTX 3090 24GB</span>
+          <span class="hw-spec">RTX 4090 24GB</span>
+          <span class="hw-spec">13B~34B 模型</span>
+        </div>
+        <ul>
+          <li>可跑 Qwen2.5-14B / Qwen2.5-32B</li>
+          <li>排班衝突檢查、報表分析、客戶對話</li>
+          <li>可同時服務 3~5 人使用</li>
+        </ul>
+        <div style="margin-top: 16px;">
+          <span class="hw-price">≈ NT$ 30,000~60,000</span>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">企業方案</div>
+        <h3>🏢 公司／部門<br><span style="font-size:14px;color:var(--text2);font-weight:400;">多工並行、完整取代雲端</span></h3>
+        <p>
+          適合需要高效能、多人同時使用、或處理高機敏資料的企業環境。
+        </p>
+        <div style="margin-bottom: 16px;">
+          <span class="hw-spec">雙 RTX 3090/4090</span>
+          <span class="hw-spec">Mac Studio M2 Ultra</span>
+          <span class="hw-spec">70B+ 模型</span>
+        </div>
+        <ul>
+          <li>可跑 Llama-3-70B / Qwen2.5-72B</li>
+          <li>完整取代雲端 API，每月省下大量 Token 費</li>
+          <li>支援多人同時存取</li>
+        </ul>
+        <div style="margin-top: 16px;">
+          <span class="hw-price">≈ NT$ 80,000~200,000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top: 60px;">混搭架構</div>
+    <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 16px;">不用全部自己扛——雲端＋地端混搭最聰明</h3>
+    <div class="flow-diagram">
+      <div class="flow-step">🔒 機密資料</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">🏠 地端模型處理</div>
+      <div class="flow-arrow" style="color:var(--text2);">⚡</div>
+      <div class="flow-step">☁️ 例行任務</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">🌐 雲端 API 處理</div>
+    </div>
+
+    <div class="grid3">
+      <div class="phase-card" style="text-align: center;">
+        <div class="phase-number" style="color: var(--accent);">🔍 硬體評估</div>
+        <h3>硬體健檢與推薦</h3>
+        <ul style="display: inline-block; text-align: left;">
+          <li>依你的需求預算推薦最佳組合</li>
+          <li>幫你看現有電腦能不能跑</li>
+          <li>含品牌、型號、通路建議</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="text-align: center;">
+        <div class="phase-number" style="color: var(--green);">⚙️ 環境建置</div>
+        <h3>地端模型安裝調校</h3>
+        <ul style="display: inline-block; text-align: left;">
+          <li>安裝 ollama / llama.cpp 等執行環境</li>
+          <li>下載並量化適合的開源模型</li>
+          <li>串接到 Hermes Agent 系統</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="text-align: center;">
+        <div class="phase-number" style="color: var(--orange);">🔄 持續維護</div>
+        <h3>定期模型更新</h3>
+        <ul style="display: inline-block; text-align: left;">
+          <li>追蹤最新開源模型動態</li>
+          <li>定期評估是否需升級</li>
+          <li>模型版本更新與效能調校</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <strong>地端不是必須，但如果你有資料安全顧慮——</strong><br>
+      我們可以設計一套「雲端跑例行任務、地端處理機敏資料」的混搭方案。
+    </div>
+  </div>
+</section>
+
+<!-- Website Building & Management -->
+<section id="website">
+  <div class="container">
+    <div class="section-label">公司官網建置</div>
+    <h2 class="section-title">從無到有幫你蓋好公司網站＋管理後台</h2>
+    <p class="section-desc">
+      不只是做一個漂亮網頁而已——我幫你建的是「網站本體 + 管理後台 + 串 AI 助理」的完整方案。
+    </p>
+
+    <div class="grid3">
+      <div class="phase-card">
+        <div class="phase-number">網站設計</div>
+        <h3>🌐 公司形象官網</h3>
+        <ul>
+          <li>RWD 響應式設計（手機／電腦／平板都好看）</li>
+          <li>Dark theme 現代風格</li>
+          <li>SEO 優化，讓 Google 找得到你</li>
+          <li>可串接 LINE／FB／Google 分析</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">管理後台</div>
+        <h3>⚙️ 後台管理系統</h3>
+        <ul>
+          <li>內容管理（最新消息、商品、服務項目）</li>
+          <li>表單管理（聯絡我們、報價申請）</li>
+          <li>會員／客戶資料管理</li>
+          <li>數據統計儀表板（瀏覽量、來源分析）</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">AI 串接</div>
+        <h3>🤖 網站 AI 助理</h3>
+        <ul>
+          <li>網站客服機器人自動回答常見問題</li>
+          <li>表單填寫 AI 輔助引導</li>
+          <li>訪客行為分析與自動跟進</li>
+          <li>串接你的 Hermes Agent 後台管理</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top: 60px;">建站流程</div>
+    <div class="flow-diagram">
+      <div class="flow-step">📝 需求討論</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">🎨 設計提案</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">💻 開發建置</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">✅ 測試上線</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">🔄 持續維護</div>
+    </div>
+
+    <div class="examples-grid" style="margin-top: 40px;">
+      <div class="example-item"><span class="check">✓</span> 公司形象網站（首頁／關於／服務／聯絡我們）</div>
+      <div class="example-item"><span class="check">✓</span> 商品展示網站（商品目錄＋購物車＋訂單管理）</div>
+      <div class="example-item"><span class="check">✓</span> 服務預約網站（線上預約＋行事曆同步）</div>
+      <div class="example-item"><span class="check">✓</span> 微型電商網站（金流串接＋物流管理）</div>
+      <div class="example-item"><span class="check">✓</span> AI 客服整合（網站即時通訊＋自動回覆）</div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 40px;">
+      <strong>技術架構：</strong><br>
+      GitHub Pages（前端展示） → Render（後端 API） → Supabase（資料庫）<br>
+      <span style="font-size: 14px; color: var(--text2);">低成本、好維護、可擴充——加功能不加價</span>
+    </div>
+  </div>
+</section>
+
 <!-- Audience -->
 <section id="audience">
   <div class="container">
@@ -341,9 +555,9 @@
         庫存、帳款、客戶<br>一機搞定
       </div>
       <div class="audience-item">
-        <span class="icon">📋</span>
-        <strong>行政人員</strong><br>
-        請假統計、表單流程<br>不再手動 key
+        <span class="icon">🌐</span>
+        <strong>公司官網需求</strong><br>
+        想做網站＋管理後台<br>＋AI 客服
       </div>
     </div>
   </div>
@@ -380,6 +594,7 @@
         </ul>
         <div style="margin-top: 20px; font-size: 24px; font-weight: 700; color: var(--text);">NT$ 25,000~50,000</div>
         <div style="font-size: 13px; color: var(--text2);">一次性，含 2 個月維護</div>
+        <div style="font-size: 12px; color: var(--accent2); margin-top: 8px;">† 地端部署／網站建置另計</div>
       </div>
       <div class="phase-card" style="text-align: left;">
         <div class="phase-number" style="color: var(--orange);">Expansion Retainer</div>
