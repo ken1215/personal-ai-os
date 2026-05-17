@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal AI Operating System</title>
+<meta name="description" content="把聊天機器人，升級成真正替你運作的私人 AI 系統">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #12121a;
+    --bg3: #1a1a28;
+    --border: #2a2a3e;
+    --text: #e8e8f0;
+    --text2: #8888aa;
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --green: #00b894;
+    --orange: #fdcb6e;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Navigation */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(10,10,15,0.8); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo {
+    font-weight: 700; font-size: 16px;
+    color: var(--text); text-decoration: none;
+  }
+  nav .logo span { color: var(--accent); }
+  nav .nav-links { display: flex; gap: 24px; align-items: center; }
+  nav .nav-links a {
+    color: var(--text2); text-decoration: none; font-size: 14px;
+    font-weight: 500; transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--text); }
+  nav .nav-cta {
+    background: var(--accent); color: white; border: none;
+    padding: 8px 20px; border-radius: 8px; font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  nav .nav-cta:hover { background: #5a4bd1; transform: translateY(-1px); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 64px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(108,92,231,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(162,155,254,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(108,92,231,0.15); color: var(--accent2);
+    padding: 6px 16px; border-radius: 100px; font-size: 13px;
+    font-weight: 600; margin-bottom: 24px;
+    border: 1px solid rgba(108,92,231,0.2);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero h2 {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 400; color: var(--text2);
+    margin-bottom: 40px; line-height: 1.5;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: white; border: none;
+    padding: 14px 32px; border-radius: 10px; font-size: 16px;
+    font-weight: 600; cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #5a4bd1; transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--text); border: 1px solid var(--border);
+    padding: 14px 32px; border-radius: 10px; font-size: 16px;
+    font-weight: 500; cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* Sections */
+  section { padding: 100px 0; }
+  .section-label {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 18px; color: var(--text2);
+    max-width: 650px; margin-bottom: 60px;
+  }
+
+  /* Problem Section */
+  #problem .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px; margin-bottom: 48px;
+  }
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    transition: all 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .icon { font-size: 28px; margin-bottom: 12px; }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(162,155,254,0.05));
+    border: 1px solid rgba(108,92,231,0.2);
+    border-radius: var(--radius); padding: 36px 40px;
+    font-size: 18px; line-height: 1.8;
+    text-align: center; font-weight: 500;
+  }
+
+  /* Deliverables */
+  #deliverables .grid3 {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px; margin-bottom: 48px;
+  }
+  .phase-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px;
+    position: relative; overflow: hidden;
+  }
+  .phase-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .phase-card:nth-child(1)::before { background: var(--accent); }
+  .phase-card:nth-child(2)::before { background: var(--green); }
+  .phase-card:nth-child(3)::before { background: var(--orange); }
+  .phase-number {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .phase-card:nth-child(2) .phase-number { color: var(--green); }
+  .phase-card:nth-child(3) .phase-number { color: var(--orange); }
+  .phase-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .phase-card p { color: var(--text2); font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+  .phase-card ul { list-style: none; padding: 0; }
+  .phase-card ul li {
+    padding: 6px 0; font-size: 14px; color: var(--text);
+    padding-left: 20px; position: relative;
+  }
+  .phase-card ul li::before {
+    content: '→'; position: absolute; left: 0; color: var(--accent2);
+  }
+
+  /* Flow Diagram */
+  .flow-diagram {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 40px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 48px;
+  }
+  .flow-step {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 24px;
+    font-size: 14px; font-weight: 500; text-align: center;
+  }
+  .flow-arrow { color: var(--accent); font-size: 20px; font-weight: 700; }
+  .flow-step.highlight {
+    border-color: var(--accent);
+    background: rgba(108,92,231,0.1);
+  }
+
+  /* Examples */
+  .examples-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .example-item {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px;
+  }
+  .example-item .check { color: var(--green); font-size: 18px; }
+
+  /* Audience */
+  #audience .audience-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;
+  }
+  .audience-item {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; text-align: center;
+    font-size: 15px; line-height: 1.6;
+  }
+  .audience-item .icon { font-size: 28px; margin-bottom: 8px; display: block; }
+
+  /* CTA Section */
+  #cta {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(108,92,231,0.08), rgba(162,155,254,0.03));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  #cta .section-desc { margin: 0 auto 40px; }
+  .cta-quote {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-style: italic; color: var(--text2);
+    max-width: 600px; margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  .cta-quote::before { content: '\201C'; }
+  .cta-quote::after { content: '\201D'; }
+
+  /* Contact */
+  #contact {
+    padding: 80px 0;
+    text-align: center;
+  }
+  #contact h3 { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+  .contact-info {
+    display: flex; flex-direction: column; gap: 12px;
+    align-items: center;
+  }
+  .contact-info a {
+    color: var(--accent2); text-decoration: none;
+    font-size: 16px; transition: color 0.2s;
+  }
+  .contact-info a:hover { color: white; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0; text-align: center;
+    color: var(--text2); font-size: 13px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+    section { padding: 60px 0; }
+    .flow-diagram { flex-direction: column; padding: 24px; }
+    .flow-arrow { transform: rotate(90deg); }
+    .highlight-box { padding: 24px; font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="logo">Personal <span>AI</span> OS</a>
+  <div class="nav-links">
+    <a href="#problem">痛點</a>
+    <a href="#deliverables">服務</a>
+    <a href="#audience">適合誰</a>
+    <a href="#cta">合作方案</a>
+    <a href="#contact" class="nav-cta">聯絡我</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-badge">✦ Personal AI Operating System</div>
+    <h1>把聊天機器人<br>升級成真正替你運作的<br><span>私人 AI 系統</span></h1>
+    <h2>你真正需要的不是更多 AI 工具，而是一套會記得你、主動追蹤、在對的時間提醒你、隨著使用越來越懂你的系統。</h2>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">預約免費諮詢 →</a>
+      <a href="#deliverables" class="btn-secondary">了解服務內容</a>
+    </div>
+  </div>
+</section>
+
+<!-- Problem Section -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label">你真正需要的</div>
+    <h2 class="section-title">不是更多 AI 工具</h2>
+    <p class="section-desc">你需要的是一套會隨著你使用而越來越懂你的系統。</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h3>記得你的偏好與狀態</h3>
+        <p>不用每次重複說明你的習慣、設定和優先順序。系統會記住，並自動套用。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔍</div>
+        <h3>主動追蹤重要資訊</h3>
+        <p>不用自己每天巡、每週翻。系統會幫你盯著，變化發生時第一個通知你。</p>
+      </div>
+      <div class="card">
+        <div class="icon">⏰</div>
+        <h3>在對的時間提醒你</h3>
+        <p>不是無差別轟炸通知。只有在你要做決策的時候，才會收到真正有用的訊息。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔄</div>
+        <h3>把重複決策變成流程</h3>
+        <p>每天同樣的檢查、同樣的判斷，交給系統自動執行。你只需要做機器做不到的決定。</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌱</div>
+        <h3>隨著使用越來越懂你</h3>
+        <p>不是買回來功能就固定了。系統會根據你的使用習慣持續調整，越用越順手。</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      這不是單純安裝一個聊天機器人。<br>
+      這是把你的數位生活，整理成一套可以長期運作的 <strong>Personal AI Operating System</strong>。
+    </div>
+  </div>
+</section>
+
+<!-- Deliverables -->
+<section id="deliverables">
+  <div class="container">
+    <div class="section-label">我們會為你完成</div>
+    <h2 class="section-title">從核心到自動化</h2>
+    <p class="section-desc">三個階段，一步步把你的需求變成會主動工作的系統。</p>
+
+    <div class="grid3">
+      <div class="phase-card">
+        <div class="phase-number">Phase 1</div>
+        <h3>Foundation Sprint</h3>
+        <p>讓系統穩定、可達、可用。</p>
+        <ul>
+          <li>安裝並修復 HE/Agent 環境</li>
+          <li>串接你真正會使用的入口（Telegram）</li>
+          <li>建立登入後自動啟動與基本安全設定</li>
+          <li>1 個基礎自動化技能</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">Phase 2</div>
+        <h3>Personal OS Build</h3>
+        <p>選定一個高價值領域，建立專屬技能與自動化流程。</p>
+        <ul>
+          <li>財務管理 / 投資追蹤</li>
+          <li>郵件與帳單提醒</li>
+          <li>行程整理</li>
+          <li>每週 / 每月摘要</li>
+          <li>其他你反覆需要處理的流程</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-number">Phase 3</div>
+        <h3>Expansion Retainer</h3>
+        <p>持續擴充更多流程，讓系統越用越像你。</p>
+        <ul>
+          <li>固定時間分析</li>
+          <li>自動提醒與狀態追蹤</li>
+          <li>週報 / 月報自動產出</li>
+          <li>異常警示</li>
+          <li>長期偏好記憶</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top: 60px;">系統運作方式</div>
+    <div class="flow-diagram">
+      <div class="flow-step">📁 你的資料與需求</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">⚙️ 專屬狀態檔與技能</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">🔄 每日／每週／每月自動流程</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step highlight">💡 你只在需要決策時收到真正有用的訊息</div>
+    </div>
+
+    <div class="section-label">實際成果範例</div>
+    <div class="examples-grid">
+      <div class="example-item"><span class="check">✓</span> 每日收盤後自動整理投資狀態</div>
+      <div class="example-item"><span class="check">✓</span> 每週檢查帳單與重要郵件</div>
+      <div class="example-item"><span class="check">✓</span> 固定產出個人摘要與提醒</div>
+      <div class="example-item"><span class="check">✓</span> 依你的家庭偏好推薦週末活動</div>
+      <div class="example-item"><span class="check">✓</span> 長期追蹤你的計畫進度，而不是每次重新開始</div>
+    </div>
+  </div>
+</section>
+
+<!-- Audience -->
+<section id="audience">
+  <div class="container">
+    <div class="section-label">適合誰</div>
+    <h2 class="section-title">如果你也有這樣的感覺</h2>
+    <p class="section-desc">你可能不是需要更多 AI，而是需要一套會替你運作的系統。</p>
+    <div class="audience-grid">
+      <div class="audience-item">
+        <span class="icon">🤔</span>
+        減少重複思考<br>與重複追蹤
+      </div>
+      <div class="audience-item">
+        <span class="icon">🔄</span>
+        把 AI 從「問答工具」<br>變成「長期系統」
+      </div>
+      <div class="audience-item">
+        <span class="icon">📊</span>
+        讓工作、生活、財務<br>或投資流程更有秩序
+      </div>
+      <div class="audience-item">
+        <span class="icon">👤</span>
+        擁有一套真正依自己習慣<br>打造的私人 AI 系統
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="section-label">你買到的不是功能</div>
+    <h2 class="section-title">而是少掉的負擔</h2>
+    <p class="section-desc">
+      <strong>別人賣的是 AI 功能。</strong><br>
+      我們交付的是：你不用再一直記得、一直追、一直重做的生活系統。
+    </p>
+
+    <div class="cta-quote">
+      我不是需要更多 AI，我是需要一套會替我運作的系統。
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto 40px;">
+      <div class="phase-card" style="text-align: left;">
+        <div class="phase-number" style="color: var(--accent);">Foundation Sprint</div>
+        <h3>基礎建置</h3>
+        <p>適合想先把系統建起來的人</p>
+        <ul>
+          <li>環境安裝與設定</li>
+          <li>Telegram 串接</li>
+          <li>1 個基礎自動化</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="text-align: left;">
+        <div class="phase-number" style="color: var(--green);">Personal OS Build</div>
+        <h3>完整建置</h3>
+        <p>適合想完成第一個 AI 工作流的人</p>
+        <ul>
+          <li>3 個深度技能</li>
+          <li>排程自動化</li>
+          <li>教育訓練</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="text-align: left;">
+        <div class="phase-number" style="color: var(--orange);">Expansion Retainer</div>
+        <h3>持續擴充</h3>
+        <p>適合想持續納入更多流程的人</p>
+        <ul>
+          <li>每月新增流程</li>
+          <li>系統維護</li>
+          <li>優先支援</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="color: var(--text2); font-size: 14px; margin-bottom: 32px;">
+      報價可依整合數量、技能數量、資料複雜度與後續維護需求調整。
+    </p>
+
+    <a href="#contact" class="btn-primary">開始對話 →</a>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <h3>讓我們開始第一步</h3>
+    <p style="color: var(--text2); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">
+      如果你已經感覺到「我不是需要更多 AI，我是需要一套會替我運作的系統」——<br>
+      那我們可以從一個最值得先被自動化的流程開始。
+    </p>
+    <div class="contact-info">
+      <a href="mailto:your@email.com">✉️ your@email.com</a>
+      <a href="https://t.me/your_telegram">💬 Telegram: @your_id</a>
+      <a href="#">🔗 LINE ID: your_line</a>
+    </div>
+    <p style="color: var(--text2); font-size: 13px; margin-top: 24px;">
+      （把你的聯絡方式填上來，就可以上線了）
+    </p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>Personal AI Operating System &mdash; 把聊天機器人，升級成真正替你運作的私人 AI 系統</p>
+  </div>
+</footer>
+
+</body>
+</html>
